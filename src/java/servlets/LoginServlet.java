@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import user.User;
 
 /**
  *
@@ -61,6 +62,10 @@ public class LoginServlet extends HttpServlet {
         String username = (String) request.getParameter("username");
         String password = (String) request.getParameter("password");
         
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        
         if (username != null &&
             password != null &&
             !username.equals("") &&
@@ -68,8 +73,8 @@ public class LoginServlet extends HttpServlet {
             
             UserService userService = new UserService();
         
-            if (userService.login(username, password)) {
-                request.setAttribute("username", username);
+            if (userService.login(user.getUsername(), user.getPassword())) {
+                request.setAttribute("user", user);
                 request.getRequestDispatcher("/MainPageServlet").forward(request, response);
                 return;
             }
